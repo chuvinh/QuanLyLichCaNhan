@@ -1,0 +1,41 @@
+body{
+	font-family: 'verdana', serif, sans-serif;
+	font-size:14px;
+}
+
+.error{
+	color:red;
+}
+.display-none{
+	display:  none;
+}
+
+.navbar-nav.navbar-right label{
+	padding:15px;
+}
+
+.menu-focus{
+	background:#2e2eca;
+	border: 1px solid #2e2eca;
+	border-radius: 5px;
+}
+.menu-focus>a:hover .menu-focus,.menu-focus>a:focus .menu-focus{
+	background: blue;
+}
+.menu-focus>a{
+	color:white;
+}
+.nav>li.menu-focus>a:focus, .nav>li.menu-focus>a:hover{
+	color:white;
+	background: #0303af;
+}
+
+.form-tsk{
+	padding:5px;
+	font-size: 13px;
+}
+.form-group label.equal-input, .form-group div{
+	margin-top: 5px;
+	margin-bottom: 5px;
+	line-height: 34px;
+}

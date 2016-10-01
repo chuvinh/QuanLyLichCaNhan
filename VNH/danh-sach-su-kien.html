@@ -5,12 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/mycss.css">
+  <link rel="stylesheet" href="css/fullcalendar.min.css">
+  <link rel="stylesheet" href="css/fullcalendar.print.css" media='print' >
+  <link rel="stylesheet" href="css/jquery-ui.min.css">
+
   <script src="js/jquery.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
- 
+  <script src="js/jquery-ui.min.js"></script>
+  <script src="js/moment.min.js"></script>
+  <script src="js/fullcalendar.min.js"></script>
+  <style>
+	::-webkit-scrollbar { 
+		display: block; 
+	}
+    #calendar {
+      min-width: 900px;
+      margin: 0 auto;
+	  font-family: verdana,sans-serif,arial;
+    }
+	
+    .fc-event-container{
+      cursor: pointer;
+    }
+	#eventContent{
+		width:90%;
+		margin: auto;
+	}
+	#eventContent .modal-content{
+		width:100%;
+		margin: 0px auto;
+		padding: 5px;
+	}
+	#eventContent .modal-dialog{
+		width: 100%;
+	}
+	#form-xs-sk{
+	  
+	}
+	
+	@media (max-width:600px){
+		#eventContent{
+			width:100%;
+			margin: auto;
+		}
+	}
+	@media (max-width:350px){
+		.form-group label:nth-child(1),.form-group label:nth-child(2){
+			width: 100%;
+		}
+	}
+  </style>
 </head>
 <body>
-<h3>Test thoi</h3>
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -33,8 +79,8 @@
   <div class="row">
     <div class="col-md-2 col-sm-3">
       <ul class="nav nav-pills nav-stacked">
-        <li class="menu-focus"><a href="#">Thêm sự kiện</a></li>
-        <li><a href="#">Danh sách sự kiện</a></li>
+        <li><a href="#">Thêm sự kiện</a></li>
+        <li class="menu-focus"><a href="#">Danh sách sự kiện</a></li>
         <li><a href="#">Tìm tài khoản</a></li>
         <li><a href="#">Tìm sự kiện</a></li>
         <li><a href="#">Quản lý tài khoản</a></li>
@@ -44,36 +90,52 @@
 
     <div class="col-md-10 col-sm-9">
       <div class="row navbar navbar-default">
-         <div style="width:max-content; margin:auto; line-height:50px; font-weight: 700;">Thêm sự kiện</div>
+         <div style="width:max-content; margin:auto; line-height:50px; font-weight: 700;">Danh sách sự kiện</div>
       </div>
       <div class="row">
-         <div class="form-horizontal form-tsk">
+         
+        <div id="calendar"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="eventContent" class="modal fade" title="Chi tiết về sự kiện" tabindex="-1" role="dialog" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modal_event-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-horizontal form-xs-sk">
             <div class="form-group">
-               <label class="col-lg-1 col-md-2 col-sm-4 equal-input">Tên:</label>
-               <div class="col-lg-5 col-md-4 col-sm-8">
-                  <input type="text" class="form-control" id="inputEmail3" placeholder="Tên sự kiện(*)">
+               <label class="col-lg-2 col-md-3 col-sm-5 col-xs-6 equal-input">Người tổ chức:</label>
+               
+               <label class="col-lg-4 col-md-3 col-sm-7 col-xs-6 equal-input">Nguyễn Thị Hằng</label>
+
+               <label class="col-lg-1 col-md-2 col-sm-4 col-xs-12 equal-input">Tên:</label>
+               <div class="col-lg-5 col-md-4 col-sm-8 col-xs-12">
+                 <input type="text" class="form-control" id="form_input-ten-su-kien">
                </div>
            
-               <label class="col-lg-1 col-md-2 col-sm-4 equal-input">Vị trí:</label>
-               <div class="col-lg-5 col-md-4 col-sm-8">
-                  <input type="text" class="form-control" id="inputPassword3" placeholder="Vị trí">
-               </div>
             </div>
            
             <div class="form-group">
                <label class="col-lg-1 col-md-2 col-sm-4 equal-input">Bắt đầu:</label>
                <div class="col-lg-3 col-md-5 col-sm-4">
-                  <input type="date" class="form-control" id="inputEmail3" >
+                  <input type="date" class="form-control" id="form_input-ngay-bat-dau">
                </div>
                <div class="col-lg-2 col-md-5 col-sm-4">
-                  <input type="time" class="form-control" id="inputEmail3">
+                  <input type="time" class="form-control" id="form_input-gio-bat-dau">
                </div>
                <label class="col-lg-1 col-md-2 col-sm-4 equal-input" style="padding-right:0px">Kết thúc:</label>
                <div class="col-lg-3 col-md-5 col-sm-4">
-                  <input type="date" class="form-control" id="inputEmail3" >
+                  <input type="date" class="form-control" id="form_input-ngay-ket-thuc" >
                </div>
                <div class="col-lg-2 col-md-5 col-sm-4">
-                  <input type="time" class="form-control" id="inputEmail3">
+                  <input type="time" class="form-control" id="form_input-gio-ket-thuc">
                </div>
             </div>
             <div class="form-group">
@@ -86,9 +148,13 @@
                     <option value='3'>Hàng tháng</option>
                   </select>
                </div>
+               <label class="col-lg-1 col-md-2 col-sm-4 equal-input">Vị trí:</label>
+               <div class="col-lg-5 col-md-4 col-sm-8">
+                  <input type="text" class="form-control" id="inputPassword3" placeholder="Vị trí">
+               </div>
             </div>
             
-            <div class="form-group display-none tsk-ts" id="tsk-ts-ngay">
+            <div class="form-group display-none tsk-ts" id="form_select-them-su-kien">
                <label class="col-md-1 col-sm-1 equal-input">Từ:</label>
                <div class="col-md-5 col-sm-5">
                   <input type="time" class="form-control" id="inputEmail3" >
@@ -117,13 +183,13 @@
 
                <div class="form-group">
                   <label class="col-md-1 col-sm-1 equal-input">Từ:</label>
-                  <div class="col-md-5 col-sm-5">
+                  <div class="col-md-5 col-sm-5" >
                      <input type="time" class="form-control" id="inputEmail3" >
                   </div>
                   
                   <label class="col-md-1 col-sm-1 equal-input" style="padding-right:0px">Đến:</label>
                   <div class="col-md-5 col-sm-5">
-                     <input type="time" class="form-control" id="inputEmail3" >
+                     <input type="time" class="form-control" id="inputEmail3">
                   </div>
                </div>
             </div>
@@ -219,26 +285,110 @@
                </div>
             </div>
             <div class="form-group">
-               <a href="" id="form_button-them-nhac-nho">Thêm nhắc nhở</a>
+               <a href="#" id="popup_button-them-nhac-nho">Thêm nhắc nhở</a>
             </div>
-            <div class="form-group">
-               <div class="col-sm-offset-5 col-sm-7">
-                  <button type="submit" class="btn btn-primary">Xác nhận</button>
-                  <button type="submit" class="btn btn-default">Hủy bỏ</button>
-               </div>
-            </div>
+            
          </div>
-         
-
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Chỉnh sửa</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Hủy bỏ</button>
       </div>
     </div>
   </div>
-
+  
 </div>
 
 <script>
 $(document).ready(function(){
-   $("#tsk-tan-suat").change(function(e){
+   $('#calendar').fullCalendar({
+      header: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'month,agendaWeek,agendaDay,listMonth'
+        },
+      defaultDate: '2016-09-12',
+      editable: false,
+      eventLimit: true,
+      theme:false,
+      navLinks: true,
+      events: [
+        {
+          title: 'All Day Event',
+          start: '2016-09-01',
+          end: '2016-09-01',
+          hour_start:'6:00',
+          hour_end:'12:00',
+          ntc:true
+        },
+        {
+          title: 'Long Event',
+          start: '2016-09-07',
+          end: '2016-09-10',
+          ntc:false
+        },
+        {
+          id: 999,
+          title: 'Repeating Event',
+          start: '2016-09-09T16:00:00'
+        },
+        {
+          id: 999,
+          title: 'Repeating Event',
+          start: '2016-09-16T16:00:00'
+        },
+        {
+          title: 'Conference',
+          start: '2016-09-11',
+          end: '2016-09-13'
+        },
+        {
+          title: 'Meeting',
+          start: '2016-09-12T10:30:00',
+          end: '2016-09-12T12:30:00'
+        },
+        {
+          title: 'Lunch',
+          start: '2016-09-12T12:00:00'
+        },
+        {
+          title: 'Meeting',
+          start: '2016-09-12T14:30:00'
+        },
+        {
+          title: 'Happy Hour',
+          start: '2016-09-12T17:30:00'
+        },
+        {
+          title: 'Dinner',
+          start: '2016-09-12T20:00:00'
+        },
+        {
+          title: 'Birthday Party',
+          start: '2016-09-13T07:00:00',
+          description:'Birthday of my friend'
+        },
+        {
+          title: 'Click for Google',
+          url: 'http://google.com/',
+          start: '2016-09-28'
+        }
+      ],
+      eventClick: function(calEvent, jsEvent, view) {
+         //set the values and open the modal
+         setContentForModal(calEvent);
+         // change the border color just for fun
+         $(this).css('border-color', 'red');
+
+      }
+    });
+    
+   $("#popup_button-them-nhac-nho").click(function(e){
+      e.preventDefault();
+      themDongNhacNho($(this));
+   });
+
+   $("#form_select-them-su-kien").change(function(e){
       $(".tsk-ts").slideUp();
       switch(this.value){
          case '1':
@@ -255,38 +405,52 @@ $(document).ready(function(){
             break;
       }
    });
-   $("#form_button-them-nhac-nho").click(function(e){
-      e.preventDefault();
-      themDongNhacNho($(this));
-   });
-
 });
 
+function setContentForModal(calEvent){
+   $("#modal_event-title").html(calEvent.title);
+   $("#form_input-ten-su-kien").val(calEvent.title);
+   $("#form_input-ngay-bat-dau").val(calEvent.start._i);
+   if(calEvent.end===null)
+      $("#form_input-ngay-ket-thuc").val(calEvent.start._i);
+   else
+      $("#form_input-ngay-ket-thuc").val(calEvent.end._i);
+   
+   if(calEvent.ntc===false){
+      console.log('hi');
+      $("#form_input-ngay-bat-dau").attr('disabled','disabled');
+      $("#form_input-ngay-ket-thuc").attr('disabled','disabled');
+   }
+   
+   $("#eventContent").modal('show');
+}
+
 function themDongNhacNho(o){
-   console.log(o);
-   o.parent().hide().before('<div class="form-group">'+
-            '<label class="col-xs-3 equal-input">Nhắc nhở:</label>'+
-            '<div class="col-xs-3">'+
-               '<select class="form-control">'+
-                 '<option>Email</option>'+
-                 '<option>Phone</option>'+
-               '</select>'+
-            '</div>'+
-            '<div class="col-xs-3">'+
-               '<input type="number" class="form-control" id="" value="0">'+
-            '</div>'+
-            '<div class="col-xs-3">'+
-               '<select class="form-control">'+
-                  '<option>Giây</option>'+
-                  '<option>Phút</option>'+
-                  '<option>Giờ</option>'+
-                  '<option>Ngày</option>'+
-               '</select>'+
-            '</div>'+
-         '</div>').slideDown('fast');
-};
+   console.log()
+   o.parent().hide().before(
+      '<div class="form-group">'+
+         '<label class="col-xs-3 equal-input">Nhắc nhở:</label>'+
+         '<div class="col-xs-3">'+
+            '<select class="form-control">'+
+              '<option>Email</option>'+
+              '<option>Phone</option>'+
+            '</select>'+
+         '</div>'+
+         '<div class="col-xs-3">'+
+            '<input type="number" class="form-control" id="" value="0">'+
+         '</div>'+
+         '<div class="col-xs-3">'+
+            '<select class="form-control">'+
+               '<option>Giây</option>'+
+               '<option>Phút</option>'+
+               '<option>Giờ</option>'+
+               '<option>Ngày</option>'+
+            '</select>'+
+         '</div>'+
+      '</div>').slideDown('fast');
+   };
 
 </script>
-
+  
 </body>
 </html>
